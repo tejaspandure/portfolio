@@ -5,47 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tejas Pandure — AI & Backend Engineer</title>
 <meta name="description" content="Tejas Pandure — Final-year IT engineer specializing in RAG systems, LLM pipelines, and scalable backend APIs. Available for AI and Backend roles in 2026.">
-<meta name="theme-color" content="#03050a">
+<meta name="theme-color" content="#050508">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ── CURSOR ── -->
-<div id="cursorDot"></div>
-<div id="cursorGlow"></div>
+<!-- ── NOISE OVERLAY ── -->
+<div class="noise-overlay" aria-hidden="true"></div>
 
-<!-- ── GRADIENT MESH BG ── -->
-<div class="mesh-bg" aria-hidden="true">
-  <div class="mesh-orb mo-1"></div>
-  <div class="mesh-orb mo-2"></div>
-  <div class="mesh-orb mo-3"></div>
-  <div class="mesh-grid"></div>
+<!-- ── CUSTOM CURSOR ── -->
+<div id="cursorDot" aria-hidden="true"></div>
+<div id="cursorRing" aria-hidden="true"></div>
+
+<!-- ── BACKGROUND ── -->
+<div class="bg-canvas" aria-hidden="true">
+  <canvas id="particleCanvas"></canvas>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+  <div class="bg-grid"></div>
 </div>
 
 <!-- ══════════ NAVIGATION ══════════ -->
 <header id="siteHeader">
   <nav id="navbar" role="navigation" aria-label="Main navigation">
     <a href="#" class="nav-logo" id="logoLink" aria-label="Tejas Pandure home">
-      <span class="logo-mark">TP</span><span class="logo-dot">.</span>
+      <span class="logo-tp">TP</span><span class="logo-dot">.</span>
     </a>
 
     <ul class="nav-links" id="navLinks" role="list">
-      <li><a href="#about"      class="nav-link" data-hover="About">About</a></li>
-      <li><a href="#skills"     class="nav-link" data-hover="Skills">Skills</a></li>
-      <li><a href="#projects"   class="nav-link" data-hover="Projects">Projects</a></li>
-      <li><a href="#experience" class="nav-link" data-hover="Experience">Experience</a></li>
-      <li><a href="#education"  class="nav-link" data-hover="Education">Education</a></li>
-      <li><a href="#contact"    class="nav-link" data-hover="Contact">Contact</a></li>
+      <li><a href="#about"      class="nav-link" data-label="About">About</a></li>
+      <li><a href="#skills"     class="nav-link" data-label="Skills">Skills</a></li>
+      <li><a href="#projects"   class="nav-link" data-label="Projects">Projects</a></li>
+      <li><a href="#experience" class="nav-link" data-label="Experience">Experience</a></li>
+      <li><a href="#education"  class="nav-link" data-label="Education">Education</a></li>
+      <li><a href="#contact"    class="nav-link" data-label="Contact">Contact</a></li>
     </ul>
 
     <a href="https://drive.google.com/drive/folders/1BerPEMrnpgcBDefpkpVDlP-jiLF4H9Kp?usp=drive_link"
-       class="nav-resume" target="_blank" rel="noopener" id="resumeBtn">
+       class="btn-resume" target="_blank" rel="noopener" id="resumeBtn">
       <span>Resume</span>
-      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-        <path d="M5.5 1v6.5M2 4.5l3.5 3.5 3.5-3.5M1 10h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M6 1v7M2.5 5l3.5 3.5L9.5 5M1 11h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
 
@@ -55,14 +59,14 @@
   </nav>
 </header>
 
-<!-- Mobile menu -->
+<!-- Mobile Navigation -->
 <div class="mobile-overlay" id="mobileNav" role="dialog" aria-modal="true" aria-label="Mobile navigation">
   <button class="mobile-close" id="mobileClose" aria-label="Close menu">
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-      <path d="M17 5L5 17M5 5l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </svg>
   </button>
-  <nav class="mobile-nav" aria-label="Mobile navigation">
+  <nav class="mobile-nav">
     <a href="#about"      class="mobile-link">About</a>
     <a href="#skills"     class="mobile-link">Skills</a>
     <a href="#projects"   class="mobile-link">Projects</a>
@@ -78,108 +82,102 @@
 
 <!-- ══════════ HERO ══════════ -->
 <section id="hero" class="hero">
-  <!-- Spotlight that follows cursor -->
-  <div class="hero-spotlight" id="heroSpotlight" aria-hidden="true"></div>
+  <div class="hero-glow-top" aria-hidden="true"></div>
 
   <div class="hero-inner">
-    <!-- Left: Content -->
-    <div class="hero-left">
-      <div class="hero-status reveal-fade" style="--d:0s">
-        <span class="status-pulse"></span>
+    <!-- Left Column -->
+    <div class="hero-content">
+      <div class="hero-badge reveal" data-delay="0">
+        <span class="badge-pulse"></span>
         <span id="statusText">Available for AI / Backend Roles · 2026</span>
       </div>
 
-      <h1 class="hero-name reveal-fade" style="--d:0.12s">
-        <span class="name-line name-first">Tejas</span>
-        <span class="name-line name-last">Pandure</span>
+      <h1 class="hero-name reveal" data-delay="100">
+        <span class="name-word">Tejas</span>
+        <span class="name-word name-gradient">Pandure</span>
       </h1>
 
-      <div class="hero-tagline reveal-fade" style="--d:0.24s">
-        <span class="tagline-static">I build </span>
+      <div class="hero-tagline reveal" data-delay="200">
+        <span class="tagline-prefix">I build </span>
         <span class="tagline-typed" id="typedText"></span>
         <span class="tagline-cursor" aria-hidden="true">|</span>
       </div>
 
-      <p class="hero-bio reveal-fade" style="--d:0.36s">
-        Final-year IT engineer with real production experience building <strong>RAG-based AI systems</strong>.
-        Sole engineer on <strong>SaralFlow</strong> — a live LLM-powered Help Assistant at Sucomp TechSolutions —
-        with end-to-end ownership across scraping pipelines, <strong>ChromaDB vector indexing</strong>,
+      <p class="hero-bio reveal" data-delay="300">
+        Final-year IT engineer with real production experience building <em>RAG-based AI systems</em>.
+        Sole engineer on <em>SaralFlow</em> — a live LLM-powered Help Assistant at Sucomp TechSolutions —
+        with end-to-end ownership across scraping pipelines, <em>ChromaDB vector indexing</em>,
         LangChain orchestration, and Flask API delivery.
       </p>
 
-      <div class="hero-cta reveal-fade" style="--d:0.48s">
-        <a href="#projects" class="cta-primary" id="seeworkBtn">
+      <div class="hero-actions reveal" data-delay="400">
+        <a href="#projects" class="btn-primary" id="seeworkBtn">
           See My Work
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-            <path d="M3 7.5h9M7.5 3l4.5 4.5-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M8.5 3.5l4.5 4.5-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
-        <a href="#contact" class="cta-ghost" id="talkBtn">Let's Talk</a>
+        <a href="#contact" class="btn-ghost" id="talkBtn">Let's Talk</a>
       </div>
 
-      <div class="hero-metrics reveal-fade" style="--d:0.6s">
-        <div class="metric-item">
-          <div class="metric-val"><span class="count-num" data-target="2">0</span><sup>+</sup></div>
-          <div class="metric-lbl">Years Coding</div>
+      <div class="hero-stats reveal" data-delay="500">
+        <div class="stat-item">
+          <span class="stat-number"><span class="count-up" data-target="2">0</span>+</span>
+          <span class="stat-label">Years Coding</span>
         </div>
-        <div class="metric-div" aria-hidden="true"></div>
-        <div class="metric-item">
-          <div class="metric-val"><span class="count-num" data-target="7">0</span><sup>+</sup></div>
-          <div class="metric-lbl">Projects Shipped</div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat-item">
+          <span class="stat-number"><span class="count-up" data-target="7">0</span>+</span>
+          <span class="stat-label">Projects Shipped</span>
         </div>
-        <div class="metric-div" aria-hidden="true"></div>
-        <div class="metric-item">
-          <div class="metric-val"><span class="count-num" data-target="5">0</span><sup>+</sup></div>
-          <div class="metric-lbl">Certifications</div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat-item">
+          <span class="stat-number"><span class="count-up" data-target="5">0</span>+</span>
+          <span class="stat-label">Certifications</span>
         </div>
       </div>
     </div>
 
-    <!-- Right: Avatar -->
-    <div class="hero-right reveal-fade" style="--d:0.2s">
-      <div class="avatar-wrap" id="avatarWrap">
-        <!-- Outer rings -->
-        <div class="av-ring ring-1"></div>
-        <div class="av-ring ring-2"></div>
-        <!-- Glow basin -->
-        <div class="av-glow-basin"></div>
-        <!-- Photo -->
-        <div class="av-photo-frame">
-          <img src="profile.jpeg" alt="Tejas Pandure — AI & Backend Engineer" class="av-photo" id="avatarImg" loading="eager">
-          <div class="av-photo-shine"></div>
-        </div>
-        <!-- Floating chips -->
-        <div class="av-chip chip-1" aria-hidden="true">
-          <span class="chip-icon">🧠</span> LangChain
-        </div>
-        <div class="av-chip chip-2" aria-hidden="true">
-          <span class="chip-icon">🗄️</span> RAG
-        </div>
-        <div class="av-chip chip-3" aria-hidden="true">
-          <span class="chip-icon">⚡</span> Flask API
-        </div>
-        <!-- Dot accents -->
-        <div class="av-dot-accent da-1" aria-hidden="true"></div>
-        <div class="av-dot-accent da-2" aria-hidden="true"></div>
+    <!-- Right Column: Avatar -->
+    <div class="hero-avatar-wrap reveal" data-delay="150" id="avatarWrap">
+      <div class="avatar-orbit orbit-1" aria-hidden="true">
+        <div class="orbit-dot"></div>
+      </div>
+      <div class="avatar-orbit orbit-2" aria-hidden="true">
+        <div class="orbit-dot"></div>
+      </div>
+      <div class="avatar-glow" aria-hidden="true"></div>
+      <div class="avatar-frame">
+        <img src="profile.jpeg" alt="Tejas Pandure — AI & Backend Engineer" class="avatar-img" id="avatarImg" loading="eager">
+        <div class="avatar-overlay" aria-hidden="true"></div>
+      </div>
+      <div class="avatar-chip chip-a" aria-hidden="true">
+        <span>🧠</span> LangChain
+      </div>
+      <div class="avatar-chip chip-b" aria-hidden="true">
+        <span>🗄️</span> RAG
+      </div>
+      <div class="avatar-chip chip-c" aria-hidden="true">
+        <span>⚡</span> Flask API
       </div>
     </div>
   </div>
 
-  <!-- Scroll cue -->
-  <a href="#about" class="scroll-cue" aria-label="Scroll to About section">
-    <span class="scroll-cue-label">scroll</span>
-    <div class="scroll-cue-bar"><div class="scroll-cue-fill"></div></div>
+  <!-- Scroll Indicator -->
+  <a href="#about" class="scroll-indicator" aria-label="Scroll to About section">
+    <span class="scroll-text">scroll</span>
+    <div class="scroll-line"><div class="scroll-fill"></div></div>
   </a>
 </section>
 
 <!-- ══════════ ABOUT ══════════ -->
 <section id="about" class="section">
   <div class="container">
-    <div class="section-label fade-in">01 — About</div>
-    <h2 class="section-heading fade-in">Who I Am</h2>
+    <div class="section-eyebrow fade-up">01 — About</div>
+    <h2 class="section-title fade-up">Who I Am</h2>
 
-    <div class="about-grid">
-      <div class="about-prose fade-in">
+    <div class="about-layout">
+      <div class="about-text fade-up">
         <p>
           I'm a final-year <mark>Information Technology</mark> engineer at Sanjivani College of Engineering
           with real production experience — not just tutorials. I'm the sole engineer on <mark>SaralFlow</mark>,
@@ -200,24 +198,30 @@
         </p>
       </div>
 
-      <div class="about-pillars fade-in">
-        <div class="pillar-card pc-ai" id="pillarAI">
-          <div class="pillar-icon">🧠</div>
-          <div class="pillar-label">AI First</div>
-          <p class="pillar-desc">RAG, LLM orchestration, vector embeddings — I think in AI-native architectures.</p>
-          <div class="pillar-accent" aria-hidden="true"></div>
+      <div class="about-cards fade-up">
+        <div class="pillar-card pillar-ai">
+          <div class="pillar-icon" aria-hidden="true">🧠</div>
+          <div class="pillar-body">
+            <h3 class="pillar-title">AI First</h3>
+            <p>RAG, LLM orchestration, vector embeddings — I think in AI-native architectures.</p>
+          </div>
+          <div class="pillar-line" aria-hidden="true"></div>
         </div>
-        <div class="pillar-card pc-backend" id="pillarBackend">
-          <div class="pillar-icon">🏗️</div>
-          <div class="pillar-label">Backend Depth</div>
-          <p class="pillar-desc">REST APIs, Spring Boot, Flask, MongoDB, PostgreSQL — solid foundations under the AI.</p>
-          <div class="pillar-accent" aria-hidden="true"></div>
+        <div class="pillar-card pillar-backend">
+          <div class="pillar-icon" aria-hidden="true">🏗️</div>
+          <div class="pillar-body">
+            <h3 class="pillar-title">Backend Depth</h3>
+            <p>REST APIs, Spring Boot, Flask, MongoDB, PostgreSQL — solid foundations under the AI.</p>
+          </div>
+          <div class="pillar-line" aria-hidden="true"></div>
         </div>
-        <div class="pillar-card pc-ship" id="pillarShip">
-          <div class="pillar-icon">🚀</div>
-          <div class="pillar-label">Ship Fast</div>
-          <p class="pillar-desc">Internship-tested, production-aware. I build things that actually run in the real world.</p>
-          <div class="pillar-accent" aria-hidden="true"></div>
+        <div class="pillar-card pillar-ship">
+          <div class="pillar-icon" aria-hidden="true">🚀</div>
+          <div class="pillar-body">
+            <h3 class="pillar-title">Ship Fast</h3>
+            <p>Internship-tested, production-aware. I build things that actually run in the real world.</p>
+          </div>
+          <div class="pillar-line" aria-hidden="true"></div>
         </div>
       </div>
     </div>
@@ -227,112 +231,113 @@
 <!-- ══════════ SKILLS ══════════ -->
 <section id="skills" class="section section-alt">
   <div class="container">
-    <div class="section-label fade-in">02 — Skills</div>
-    <h2 class="section-heading fade-in">Technical Stack</h2>
+    <div class="section-eyebrow fade-up">02 — Skills</div>
+    <h2 class="section-title fade-up">Technical Stack</h2>
 
-    <div class="skills-row fade-in">
-      <!-- AI & ML panel -->
-      <div class="skill-pane sp-ai" id="skillPaneAI">
-        <div class="sp-head">
-          <div class="sp-indicator ind-cyan"></div>
-          <h3 class="sp-title">AI &amp; ML</h3>
+    <div class="skills-grid fade-up">
+      <!-- AI & ML -->
+      <div class="skill-panel">
+        <div class="skill-panel-header">
+          <span class="skill-dot dot-cyan"></span>
+          <h3>AI &amp; ML</h3>
         </div>
-        <div class="bars-list" id="barsAI">
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">LangChain / LangGraph</span><span class="sbi-pct">88%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-cyan" style="--pct:88%"></div></div>
+        <div class="bars">
+          <div class="bar-item">
+            <div class="bar-meta"><span>LangChain / LangGraph</span><span class="bar-pct">88%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-cyan" data-w="88"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">RAG Systems</span><span class="sbi-pct">85%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-cyan" style="--pct:85%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>RAG Systems</span><span class="bar-pct">85%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-cyan" data-w="85"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">ChromaDB / FAISS / Qdrant</span><span class="sbi-pct">82%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-cyan" style="--pct:82%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>ChromaDB / FAISS / Qdrant</span><span class="bar-pct">82%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-cyan" data-w="82"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">OpenAI Tool Calling</span><span class="sbi-pct">84%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-cyan" style="--pct:84%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>OpenAI Tool Calling</span><span class="bar-pct">84%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-cyan" data-w="84"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">Prompt Engineering</span><span class="sbi-pct">80%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-cyan" style="--pct:80%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>Prompt Engineering</span><span class="bar-pct">80%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-cyan" data-w="80"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">Embedding Models / Vector Search</span><span class="sbi-pct">78%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-cyan" style="--pct:78%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>Embedding Models / Vector Search</span><span class="bar-pct">78%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-cyan" data-w="78"></div></div>
           </div>
         </div>
       </div>
 
-      <!-- Backend panel -->
-      <div class="skill-pane sp-backend" id="skillPaneBackend">
-        <div class="sp-head">
-          <div class="sp-indicator ind-violet"></div>
-          <h3 class="sp-title">Backend</h3>
+      <!-- Backend -->
+      <div class="skill-panel">
+        <div class="skill-panel-header">
+          <span class="skill-dot dot-violet"></span>
+          <h3>Backend</h3>
         </div>
-        <div class="bars-list" id="barsBackend">
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">Python</span><span class="sbi-pct">92%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-violet" style="--pct:92%"></div></div>
+        <div class="bars">
+          <div class="bar-item">
+            <div class="bar-meta"><span>Python</span><span class="bar-pct">92%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-violet" data-w="92"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">Flask</span><span class="sbi-pct">85%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-violet" style="--pct:85%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>Flask</span><span class="bar-pct">85%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-violet" data-w="85"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">Java / Spring Boot</span><span class="sbi-pct">80%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-violet" style="--pct:80%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>Java / Spring Boot</span><span class="bar-pct">80%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-violet" data-w="80"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">REST API Design</span><span class="sbi-pct">88%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-violet" style="--pct:88%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>REST API Design</span><span class="bar-pct">88%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-violet" data-w="88"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">System Design / Clean Arch</span><span class="sbi-pct">75%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-violet" style="--pct:75%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>System Design / Clean Arch</span><span class="bar-pct">75%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-violet" data-w="75"></div></div>
           </div>
         </div>
       </div>
 
-      <!-- Data & DevOps panel -->
-      <div class="skill-pane sp-data" id="skillPaneData">
-        <div class="sp-head">
-          <div class="sp-indicator ind-amber"></div>
-          <h3 class="sp-title">Data &amp; DevOps</h3>
+      <!-- Data & DevOps -->
+      <div class="skill-panel">
+        <div class="skill-panel-header">
+          <span class="skill-dot dot-amber"></span>
+          <h3>Data &amp; DevOps</h3>
         </div>
-        <div class="bars-list" id="barsData">
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">MongoDB</span><span class="sbi-pct">84%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-amber" style="--pct:84%"></div></div>
+        <div class="bars">
+          <div class="bar-item">
+            <div class="bar-meta"><span>MongoDB</span><span class="bar-pct">84%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-amber" data-w="84"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">PostgreSQL</span><span class="sbi-pct">76%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-amber" style="--pct:76%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>PostgreSQL</span><span class="bar-pct">76%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-amber" data-w="76"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">Docker</span><span class="sbi-pct">70%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-amber" style="--pct:70%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>Docker</span><span class="bar-pct">70%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-amber" data-w="70"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">Git / GitHub</span><span class="sbi-pct">90%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-amber" style="--pct:90%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>Git / GitHub</span><span class="bar-pct">90%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-amber" data-w="90"></div></div>
           </div>
-          <div class="skill-bar-item">
-            <div class="sbi-meta"><span class="sbi-name">Gradio / Maven / IntelliJ</span><span class="sbi-pct">72%</span></div>
-            <div class="sbi-track"><div class="sbi-fill bar-amber" style="--pct:72%"></div></div>
+          <div class="bar-item">
+            <div class="bar-meta"><span>Gradio / Maven</span><span class="bar-pct">72%</span></div>
+            <div class="bar-track"><div class="bar-fill fill-amber" data-w="72"></div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tag cloud -->
-    <div class="tag-cloud fade-in" aria-label="Technology tags">
-      <span>Python</span><span>Java</span><span>SQL</span><span>LangChain</span><span>Flask</span>
-      <span>Spring Boot</span><span>RAG</span><span>ChromaDB</span><span>FAISS</span><span>Qdrant</span>
-      <span>OpenAI API</span><span>Tool Calling</span><span>Prompt Engineering</span><span>Embedding Models</span>
-      <span>Vector Search</span><span>MongoDB</span><span>PostgreSQL</span><span>SQLite</span>
-      <span>Docker</span><span>Git</span><span>Gradio</span><span>REST APIs</span><span>JSON Schema</span>
+    <!-- Tag Cloud -->
+    <div class="tag-cloud fade-up" aria-label="Technology tags">
+      <span>Python</span><span>Java</span><span>SQL</span><span>LangChain</span>
+      <span>Flask</span><span>Spring Boot</span><span>RAG</span><span>ChromaDB</span>
+      <span>FAISS</span><span>Qdrant</span><span>OpenAI API</span><span>Tool Calling</span>
+      <span>Prompt Engineering</span><span>Embedding Models</span><span>Vector Search</span>
+      <span>MongoDB</span><span>PostgreSQL</span><span>SQLite</span><span>Docker</span>
+      <span>Git</span><span>Gradio</span><span>REST APIs</span><span>JSON Schema</span>
     </div>
   </div>
 </section>
@@ -340,19 +345,19 @@
 <!-- ══════════ EXPERIENCE ══════════ -->
 <section id="experience" class="section">
   <div class="container">
-    <div class="section-label fade-in">03 — Experience</div>
-    <h2 class="section-heading fade-in">Work Experience</h2>
+    <div class="section-eyebrow fade-up">03 — Experience</div>
+    <h2 class="section-title fade-up">Work Experience</h2>
 
-    <div class="timeline fade-in">
+    <div class="timeline fade-up">
       <div class="tl-item">
-        <div class="tl-spine">
+        <div class="tl-spine" aria-hidden="true">
           <div class="tl-node"></div>
           <div class="tl-line"></div>
         </div>
         <div class="tl-card" id="expCard1">
-          <div class="tl-card-header">
-            <div class="tl-badge-group">
-              <span class="tl-badge badge-active">Internship · Ongoing</span>
+          <div class="tl-card-top">
+            <div class="tl-badges">
+              <span class="badge badge-live">● Internship · Ongoing</span>
             </div>
             <span class="tl-period">Jan 2026 — Present</span>
           </div>
@@ -369,7 +374,7 @@
             <li>Added confidence-gating prompt layer in LangChain RetrievalQA to suppress out-of-scope hallucinations</li>
             <li>Packaged service as Docker-composable stack, enabling one-command deployment for non-technical staff</li>
           </ul>
-          <div class="tl-tags">
+          <div class="tl-stack">
             <span>LangChain</span><span>ChromaDB</span><span>Flask</span>
             <span>Python</span><span>Docker</span><span>BeautifulSoup</span>
           </div>
@@ -382,42 +387,41 @@
 <!-- ══════════ PROJECTS ══════════ -->
 <section id="projects" class="section section-alt">
   <div class="container">
-    <div class="section-label fade-in">04 — Projects</div>
-    <h2 class="section-heading fade-in">What I've Built</h2>
+    <div class="section-eyebrow fade-up">04 — Projects</div>
+    <h2 class="section-title fade-up">What I've Built</h2>
 
-    <div class="proj-bento fade-in">
+    <div class="projects-grid fade-up">
 
-      <!-- Featured -->
-      <article class="proj-card proj-hero-card" id="projSaralFlow">
-        <div class="proj-card-bg"></div>
-        <div class="proj-card-shine" aria-hidden="true"></div>
-        <div class="proj-card-inner">
-          <header class="proj-card-hd">
+      <!-- Featured: SaralFlow -->
+      <article class="proj-card proj-featured" id="projSaralFlow">
+        <div class="proj-card-glow" aria-hidden="true"></div>
+        <div class="proj-card-body">
+          <header class="proj-header">
             <div class="proj-badges">
-              <span class="proj-badge badge-star">⭐ Featured</span>
-              <span class="proj-badge badge-wip">In Progress</span>
+              <span class="proj-badge badge-gold">⭐ Featured</span>
+              <span class="proj-badge badge-purple">In Progress</span>
             </div>
-            <span class="proj-num">01</span>
+            <span class="proj-number">01</span>
           </header>
           <h3 class="proj-title">SaralFlow</h3>
-          <p class="proj-sub">AI Help Assistant Platform</p>
-          <p class="proj-body">
+          <p class="proj-subtitle">AI Help Assistant Platform</p>
+          <p class="proj-desc">
             Production RAG Help Assistant at Sucomp TechSolutions. 3-stage pipeline: web scraping →
             ChromaDB semantic indexing (1,000+ docs) → LangChain RetrievalQA. Cut retrieval latency ~40%
             and achieved 2× precision over keyword search. Flask REST API with query-logging middleware
             enables weekly retrieval-quality iteration by the product team.
           </p>
-          <ul class="proj-checks" aria-label="Project highlights">
-            <li><span class="chk-mark" aria-hidden="true">✓</span> ~40% latency reduction</li>
-            <li><span class="chk-mark" aria-hidden="true">✓</span> 2× semantic precision</li>
-            <li><span class="chk-mark" aria-hidden="true">✓</span> Hallucination suppression</li>
-            <li><span class="chk-mark" aria-hidden="true">✓</span> Docker-composable deploy</li>
+          <ul class="proj-highlights">
+            <li><span class="check" aria-hidden="true">✓</span> ~40% latency reduction</li>
+            <li><span class="check" aria-hidden="true">✓</span> 2× semantic precision</li>
+            <li><span class="check" aria-hidden="true">✓</span> Hallucination suppression</li>
+            <li><span class="check" aria-hidden="true">✓</span> Docker-composable deploy</li>
           </ul>
-          <footer class="proj-card-ft">
+          <footer class="proj-footer">
             <div class="proj-stack">
               <span>LangChain</span><span>ChromaDB</span><span>OpenAI</span><span>Flask</span><span>Docker</span>
             </div>
-            <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="proj-gh-link" aria-label="View SaralFlow on GitHub">
+            <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="proj-link" aria-label="View SaralFlow on GitHub">
               GitHub
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
                 <path d="M2 11L11 2M11 2H4.5M11 2v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -429,18 +433,17 @@
 
       <!-- FlightAI -->
       <article class="proj-card" id="projFlightAI">
-        <div class="proj-card-shine" aria-hidden="true"></div>
-        <div class="proj-card-inner">
-          <header class="proj-card-hd">
-            <div class="proj-badges"><span class="proj-badge badge-wip" style="color:var(--cyan);background:var(--cyan-dim);border-color:rgba(0,212,255,0.25)">AI Agent</span></div>
-            <span class="proj-num">02</span>
+        <div class="proj-card-body">
+          <header class="proj-header">
+            <div class="proj-badges"><span class="proj-badge badge-cyan">AI Agent</span></div>
+            <span class="proj-number">02</span>
           </header>
           <h3 class="proj-title">FlightAI</h3>
-          <p class="proj-sub">Airline AI Support Agent</p>
-          <p class="proj-body">Multi-turn OpenAI tool-calling chatbot with structured system prompt. Implements full tool-call loop: JSON schema specs, finish_reason handling, argument parsing, result injection. SQLite-backed dynamic pricing layer + parallel tool calls in a single model turn. Deployed via Gradio.</p>
-          <footer class="proj-card-ft">
+          <p class="proj-subtitle">Airline AI Support Agent</p>
+          <p class="proj-desc">Multi-turn OpenAI tool-calling chatbot with structured system prompt. Implements full tool-call loop: JSON schema specs, finish_reason handling, argument parsing, result injection. SQLite-backed dynamic pricing layer + parallel tool calls in a single model turn. Deployed via Gradio.</p>
+          <footer class="proj-footer">
             <div class="proj-stack"><span>Python</span><span>OpenAI API</span><span>Tool Calling</span><span>SQLite</span><span>Gradio</span></div>
-            <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="proj-gh-link" aria-label="View FlightAI on GitHub">
+            <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="proj-link" aria-label="View FlightAI on GitHub">
               GitHub
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 11L11 2M11 2H4.5M11 2v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -450,18 +453,17 @@
 
       <!-- EduTrack -->
       <article class="proj-card" id="projEduTrack">
-        <div class="proj-card-shine" aria-hidden="true"></div>
-        <div class="proj-card-inner">
-          <header class="proj-card-hd">
+        <div class="proj-card-body">
+          <header class="proj-header">
             <div class="proj-badges"><span class="proj-badge">Backend</span></div>
-            <span class="proj-num">03</span>
+            <span class="proj-number">03</span>
           </header>
           <h3 class="proj-title">EduTrack</h3>
-          <p class="proj-sub">Classroom &amp; Student Management Portal</p>
-          <p class="proj-body">Full-stack portal to manage batches, students, and academic records via RESTful APIs with MongoDB. Java client interface for smooth user interaction.</p>
-          <footer class="proj-card-ft">
+          <p class="proj-subtitle">Classroom & Student Management Portal</p>
+          <p class="proj-desc">Full-stack portal to manage batches, students, and academic records via RESTful APIs with MongoDB. Java client interface for smooth user interaction.</p>
+          <footer class="proj-footer">
             <div class="proj-stack"><span>Java</span><span>Spring Boot</span><span>MongoDB</span></div>
-            <a href="https://github.com/tejaspandure/edutrack-portal" target="_blank" rel="noopener" class="proj-gh-link" aria-label="View EduTrack on GitHub">
+            <a href="https://github.com/tejaspandure/edutrack-portal" target="_blank" rel="noopener" class="proj-link" aria-label="View EduTrack on GitHub">
               GitHub
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 11L11 2M11 2H4.5M11 2v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -471,18 +473,17 @@
 
       <!-- Titanic -->
       <article class="proj-card" id="projTitanic">
-        <div class="proj-card-shine" aria-hidden="true"></div>
-        <div class="proj-card-inner">
-          <header class="proj-card-hd">
+        <div class="proj-card-body">
+          <header class="proj-header">
             <div class="proj-badges"><span class="proj-badge">ML</span></div>
-            <span class="proj-num">04</span>
+            <span class="proj-number">04</span>
           </header>
           <h3 class="proj-title">Titanic Predictor</h3>
-          <p class="proj-sub">Survival Prediction ML Model</p>
-          <p class="proj-body">Supervised ML application predicting passenger survival using Logistic Regression. Data cleaning pipeline training a binary classifier on age, price, and cabin features.</p>
-          <footer class="proj-card-ft">
+          <p class="proj-subtitle">Survival Prediction ML Model</p>
+          <p class="proj-desc">Supervised ML application predicting passenger survival using Logistic Regression. Data cleaning pipeline training a binary classifier on age, price, and cabin features.</p>
+          <footer class="proj-footer">
             <div class="proj-stack"><span>Python</span><span>Scikit-learn</span><span>Pandas</span></div>
-            <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="proj-gh-link" aria-label="View Titanic Predictor on GitHub">
+            <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="proj-link" aria-label="View Titanic Predictor on GitHub">
               GitHub
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 11L11 2M11 2H4.5M11 2v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -492,18 +493,17 @@
 
       <!-- Process Logger -->
       <article class="proj-card" id="projLogger">
-        <div class="proj-card-shine" aria-hidden="true"></div>
-        <div class="proj-card-inner">
-          <header class="proj-card-hd">
+        <div class="proj-card-body">
+          <header class="proj-header">
             <div class="proj-badges"><span class="proj-badge">Automation</span></div>
-            <span class="proj-num">05</span>
+            <span class="proj-number">05</span>
           </header>
           <h3 class="proj-title">Process Logger</h3>
-          <p class="proj-sub">Auto-Scheduled Email Reports</p>
-          <p class="proj-body">Python automation capturing running system processes into timestamped logs. Built-in scheduler triggers at user-defined intervals and auto-emails reports.</p>
-          <footer class="proj-card-ft">
+          <p class="proj-subtitle">Auto-Scheduled Email Reports</p>
+          <p class="proj-desc">Python automation capturing running system processes into timestamped logs. Built-in scheduler triggers at user-defined intervals and auto-emails reports.</p>
+          <footer class="proj-footer">
             <div class="proj-stack"><span>Python</span><span>psutil</span><span>smtplib</span></div>
-            <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="proj-gh-link" aria-label="View Process Logger on GitHub">
+            <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="proj-link" aria-label="View Process Logger on GitHub">
               GitHub
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 11L11 2M11 2H4.5M11 2v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -513,18 +513,17 @@
 
       <!-- Study Tracker -->
       <article class="proj-card" id="projStudy">
-        <div class="proj-card-shine" aria-hidden="true"></div>
-        <div class="proj-card-inner">
-          <header class="proj-card-hd">
+        <div class="proj-card-body">
+          <header class="proj-header">
             <div class="proj-badges"><span class="proj-badge">Java</span></div>
-            <span class="proj-num">06</span>
+            <span class="proj-number">06</span>
           </header>
           <h3 class="proj-title">Study Tracker</h3>
-          <p class="proj-sub">Console-based Progress App</p>
-          <p class="proj-body">Daily activity logger with CSV export using Java I/O. OOP-based with ArrayList and TreeMap collections for clean data management.</p>
-          <footer class="proj-card-ft">
+          <p class="proj-subtitle">Console-based Progress App</p>
+          <p class="proj-desc">Daily activity logger with CSV export using Java I/O. OOP-based with ArrayList and TreeMap collections for clean data management.</p>
+          <footer class="proj-footer">
             <div class="proj-stack"><span>Java</span><span>Collections</span><span>Java I/O</span></div>
-            <a href="https://github.com/tejaspandure/study-tracker" target="_blank" rel="noopener" class="proj-gh-link" aria-label="View Study Tracker on GitHub">
+            <a href="https://github.com/tejaspandure/study-tracker" target="_blank" rel="noopener" class="proj-link" aria-label="View Study Tracker on GitHub">
               GitHub
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 11L11 2M11 2H4.5M11 2v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -534,18 +533,17 @@
 
       <!-- Employee Manager -->
       <article class="proj-card" id="projEmployee">
-        <div class="proj-card-shine" aria-hidden="true"></div>
-        <div class="proj-card-inner">
-          <header class="proj-card-hd">
+        <div class="proj-card-body">
+          <header class="proj-header">
             <div class="proj-badges"><span class="proj-badge">DSA</span></div>
-            <span class="proj-num">07</span>
+            <span class="proj-number">07</span>
           </header>
           <h3 class="proj-title">Employee Manager</h3>
-          <p class="proj-sub">SQL-like Java Database</p>
-          <p class="proj-body">Java-based employee database with SQL-like ops — INSERT, SELECT, DELETE, COUNT, SUM. Core logic uses LinkedList with method overloading and OOP principles.</p>
-          <footer class="proj-card-ft">
+          <p class="proj-subtitle">SQL-like Java Database</p>
+          <p class="proj-desc">Java-based employee database with SQL-like ops — INSERT, SELECT, DELETE, COUNT, SUM. Core logic uses LinkedList with method overloading and OOP principles.</p>
+          <footer class="proj-footer">
             <div class="proj-stack"><span>Java</span><span>LinkedList</span><span>OOP</span></div>
-            <a href="https://github.com/tejaspandure/Employee-Management-System" target="_blank" rel="noopener" class="proj-gh-link" aria-label="View Employee Manager on GitHub">
+            <a href="https://github.com/tejaspandure/Employee-Management-System" target="_blank" rel="noopener" class="proj-link" aria-label="View Employee Manager on GitHub">
               GitHub
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 11L11 2M11 2H4.5M11 2v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -553,10 +551,10 @@
         </div>
       </article>
 
-    </div><!-- /proj-bento -->
+    </div><!-- /projects-grid -->
 
-    <div class="proj-more fade-in">
-      <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="cta-ghost" id="githubAllBtn">
+    <div class="projects-more fade-up">
+      <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="btn-ghost" id="githubAllBtn">
         View all on GitHub
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
           <path d="M3 7.5h9M7.5 3l4.5 4.5-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -569,72 +567,72 @@
 <!-- ══════════ CERTIFICATIONS ══════════ -->
 <section id="courses" class="section">
   <div class="container">
-    <div class="section-label fade-in">05 — Learning</div>
-    <h2 class="section-heading fade-in">Certifications</h2>
+    <div class="section-eyebrow fade-up">05 — Learning</div>
+    <h2 class="section-title fade-up">Certifications</h2>
 
-    <div class="cert-row fade-in">
+    <div class="certs-grid fade-up">
 
       <div class="cert-card" id="certAICore">
-        <div class="cert-card-glow"></div>
-        <div class="cert-icon">🧠</div>
-        <div class="cert-body">
+        <div class="cert-shimmer" aria-hidden="true"></div>
+        <div class="cert-icon" aria-hidden="true">🧠</div>
+        <div class="cert-content">
           <h3>AI Engineer Core Track</h3>
           <p>LLM Engineering, RAG systems, QLoRA fine-tuning, and AI Agents — production-focused curriculum.</p>
           <div class="cert-issuer">
             <span class="cert-by">Issued by</span>
-            <span class="cert-name">Ligency &amp; Ed Donner · Udemy</span>
+            <span class="cert-org">Ligency &amp; Ed Donner · Udemy</span>
           </div>
         </div>
       </div>
 
       <div class="cert-card" id="certAIAgentic">
-        <div class="cert-card-glow"></div>
-        <div class="cert-icon">🤖</div>
-        <div class="cert-body">
+        <div class="cert-shimmer" aria-hidden="true"></div>
+        <div class="cert-icon" aria-hidden="true">🤖</div>
+        <div class="cert-content">
           <h3>AI Engineer Agentic Track</h3>
           <p>Complete Agent &amp; MCP Course — agentic loops, tool calling, multi-agent coordination patterns.</p>
           <div class="cert-issuer">
             <span class="cert-by">Issued by</span>
-            <span class="cert-name">Ed Donner &amp; Ligency · Udemy</span>
+            <span class="cert-org">Ed Donner &amp; Ligency · Udemy</span>
           </div>
         </div>
       </div>
 
       <div class="cert-card" id="certAIProd">
-        <div class="cert-card-glow"></div>
-        <div class="cert-icon">🚀</div>
-        <div class="cert-body">
+        <div class="cert-shimmer" aria-hidden="true"></div>
+        <div class="cert-icon" aria-hidden="true">🚀</div>
+        <div class="cert-content">
           <h3>AI Engineer Production Track</h3>
           <p>Deploy LLMs &amp; Agents at Scale — production infrastructure, monitoring, and scaling strategies.</p>
           <div class="cert-issuer">
             <span class="cert-by">Issued by</span>
-            <span class="cert-name">Ligency &amp; Ed Donner · Udemy</span>
+            <span class="cert-org">Ligency &amp; Ed Donner · Udemy</span>
           </div>
         </div>
       </div>
 
       <div class="cert-card" id="certGenAI">
-        <div class="cert-card-glow"></div>
-        <div class="cert-icon">⚡</div>
-        <div class="cert-body">
+        <div class="cert-shimmer" aria-hidden="true"></div>
+        <div class="cert-icon" aria-hidden="true">⚡</div>
+        <div class="cert-content">
           <h3>Full Stack Generative &amp; Agentic AI</h3>
           <p>End-to-end GenAI with Python — from prompting and RAG to agentic workflows and full-stack deployment.</p>
           <div class="cert-issuer">
             <span class="cert-by">Issued by</span>
-            <span class="cert-name">Hitesh Choudhary &amp; Piyush Garg · Udemy</span>
+            <span class="cert-org">Hitesh Choudhary &amp; Piyush Garg · Udemy</span>
           </div>
         </div>
       </div>
 
       <div class="cert-card" id="certCloud">
-        <div class="cert-card-glow"></div>
-        <div class="cert-icon">☁️</div>
-        <div class="cert-body">
+        <div class="cert-shimmer" aria-hidden="true"></div>
+        <div class="cert-icon" aria-hidden="true">☁️</div>
+        <div class="cert-content">
           <h3>Data Analytics, Cloud &amp; AI</h3>
           <p>Cloud infrastructure, AI/ML foundations, data pipelines, and modern analytics workflows.</p>
           <div class="cert-issuer">
             <span class="cert-by">Issued by</span>
-            <span class="cert-name">EduRamp / Godrej Infotech</span>
+            <span class="cert-org">EduRamp / Godrej Infotech</span>
           </div>
         </div>
       </div>
@@ -646,36 +644,36 @@
 <!-- ══════════ EDUCATION ══════════ -->
 <section id="education" class="section section-alt">
   <div class="container">
-    <div class="section-label fade-in">06 — Education</div>
-    <h2 class="section-heading fade-in">Academic Background</h2>
+    <div class="section-eyebrow fade-up">06 — Education</div>
+    <h2 class="section-title fade-up">Academic Background</h2>
 
-    <div class="edu-row fade-in">
+    <div class="edu-grid fade-up">
 
-      <div class="edu-card edu-primary-card" id="eduBtech">
-        <span class="edu-year-badge">2022 — 2026</span>
-        <div class="edu-icon">🎓</div>
+      <div class="edu-card edu-primary" id="eduBtech">
+        <span class="edu-year">2022 — 2026</span>
+        <div class="edu-icon" aria-hidden="true">🎓</div>
         <h3>B.Tech — Information Technology</h3>
         <h4>Sanjivani College of Engineering, Kopargaon</h4>
-        <p>Final year · <strong style="color:var(--cyan)">CGPA 7.57 / 10</strong>. Focus on AI systems, backend engineering, and software design. Sole intern engineer on a live production AI product.</p>
-        <div class="edu-status-bar">
+        <p>Final year · <strong class="highlight-cyan">CGPA 7.57 / 10</strong>. Focus on AI systems, backend engineering, and software design. Sole intern engineer on a live production AI product.</p>
+        <div class="edu-status">
           <span class="edu-status-dot"></span>Currently Studying
         </div>
       </div>
 
       <div class="edu-card" id="eduHSC">
-        <span class="edu-year-badge">2022</span>
-        <div class="edu-icon">📚</div>
+        <span class="edu-year">2022</span>
+        <div class="edu-icon" aria-hidden="true">📚</div>
         <h3>Higher Secondary (HSC)</h3>
         <h4>Sarvoday Vidya Mandir</h4>
-        <p>Science stream · <strong style="color:var(--cyan)">61.50%</strong>. Strong foundation in mathematics and computing.</p>
+        <p>Science stream · <strong class="highlight-cyan">61.50%</strong>. Strong foundation in mathematics and computing.</p>
       </div>
 
       <div class="edu-card" id="eduSSC">
-        <span class="edu-year-badge">2020</span>
-        <div class="edu-icon">🏫</div>
+        <span class="edu-year">2020</span>
+        <div class="edu-icon" aria-hidden="true">🏫</div>
         <h3>Secondary Certificate (SSC)</h3>
         <h4>Sarvoday Vidya Mandir</h4>
-        <p>Graduated with distinction · <strong style="color:var(--cyan)">84.80%</strong>.</p>
+        <p>Graduated with distinction · <strong class="highlight-cyan">84.80%</strong>.</p>
       </div>
 
     </div>
@@ -685,88 +683,87 @@
 <!-- ══════════ CONTACT ══════════ -->
 <section id="contact" class="section">
   <div class="container">
-    <div class="section-label fade-in">07 — Contact</div>
-    <h2 class="section-heading fade-in">Let's Build Together</h2>
+    <div class="section-eyebrow fade-up">07 — Contact</div>
+    <h2 class="section-title fade-up">Let's Build Together</h2>
 
-    <div class="contact-grid fade-in">
+    <div class="contact-layout fade-up">
 
-      <div class="contact-left">
-        <p class="contact-intro">
+      <div class="contact-info">
+        <p class="contact-lead">
           I'm actively looking for <strong>AI Engineer</strong>, <strong>Backend Engineer</strong>,
           or <strong>ML Engineer</strong> roles in 2026. If you're building something interesting — let's talk.
         </p>
-        <div class="contact-items">
+        <div class="contact-list">
 
-          <a href="/cdn-cgi/l/email-protection#2753424d465457464943525542161767404a464e4b0944484a" class="contact-row" id="ctEmail">
-            <div class="cr-icon-wrap">
+          <a href="mailto:tejaspandure14@gmail.com" class="contact-item" id="ctEmail">
+            <div class="contact-icon">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                 <path d="M2 4.5L9 10l7-5.5M2 4.5h14v10H2V4.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
               </svg>
             </div>
-            <div class="cr-info">
-              <span class="cr-label">Email</span>
-              <span class="cr-value"><span class="__cf_email__" data-cfemail="e490818e859794858a80919681d5d4a48389858d88ca878b89">[email&#160;protected]</span></span>
+            <div class="contact-details">
+              <span class="contact-label">Email</span>
+              <span class="contact-value">tejaspandure14@gmail.com</span>
             </div>
-            <span class="cr-arrow" aria-hidden="true">→</span>
+            <span class="contact-arrow" aria-hidden="true">→</span>
           </a>
 
-          <a href="tel:+917820837203" class="contact-row" id="ctPhone">
-            <div class="cr-icon-wrap">
+          <a href="tel:+917820837203" class="contact-item" id="ctPhone">
+            <div class="contact-icon">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                 <path d="M4.5 2h3.5l1.5 4-2 1.5c1 2 3.5 4.5 5.5 5.5L14.5 11 18 12.5v3C18 16.5 12 19 4.5 11S1.5 2.5 2 2H4.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
               </svg>
             </div>
-            <div class="cr-info">
-              <span class="cr-label">Phone</span>
-              <span class="cr-value">+91 7820837203</span>
+            <div class="contact-details">
+              <span class="contact-label">Phone</span>
+              <span class="contact-value">+91 7820837203</span>
             </div>
-            <span class="cr-arrow" aria-hidden="true">→</span>
+            <span class="contact-arrow" aria-hidden="true">→</span>
           </a>
 
-          <a href="https://linkedin.com/in/tejaspandure" target="_blank" rel="noopener" class="contact-row" id="ctLinkedIn">
-            <div class="cr-icon-wrap">
+          <a href="https://linkedin.com/in/tejaspandure" target="_blank" rel="noopener" class="contact-item" id="ctLinkedIn">
+            <div class="contact-icon">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                 <rect x="2" y="2" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.4"/>
                 <path d="M5.5 7.5v6M5.5 5v.5M9 13.5V10c0-1.5 1-2.5 2.5-2.5S14 9 14 10.5v3M9 7.5v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
               </svg>
             </div>
-            <div class="cr-info">
-              <span class="cr-label">LinkedIn</span>
-              <span class="cr-value">linkedin.com/in/tejaspandure</span>
+            <div class="contact-details">
+              <span class="contact-label">LinkedIn</span>
+              <span class="contact-value">linkedin.com/in/tejaspandure</span>
             </div>
-            <span class="cr-arrow" aria-hidden="true">→</span>
+            <span class="contact-arrow" aria-hidden="true">→</span>
           </a>
 
-          <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="contact-row" id="ctGH">
-            <div class="cr-icon-wrap">
+          <a href="https://github.com/tejaspandure" target="_blank" rel="noopener" class="contact-item" id="ctGH">
+            <div class="contact-icon">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                 <path d="M9 1.5a7.5 7.5 0 00-2.37 14.62c.37.07.5-.16.5-.36V14.1c-2.08.45-2.52-1-2.52-1-.34-.87-.83-1.1-.83-1.1-.68-.46.05-.46.05-.46.74.05 1.14.77 1.14.77.66 1.13 1.74.8 2.16.62.06-.48.26-.8.47-.99C5.8 11.7 4.2 11.1 4.2 8.5c0-.82.3-1.49.77-2.02-.08-.19-.34-.96.07-1.99 0 0 .63-.2 2.06.77A7.2 7.2 0 019 5a7.2 7.2 0 011.9.26C12.34 4.29 12.96 4.5 12.96 4.5c.41 1.03.15 1.8.07 1.99.48.53.77 1.2.77 2.02 0 2.61-1.6 3.18-3.12 3.35.25.21.47.64.47 1.3v1.93c0 .2.13.44.5.36A7.5 7.5 0 009 1.5z" stroke="currentColor" stroke-width="1.2" fill="none"/>
               </svg>
             </div>
-            <div class="cr-info">
-              <span class="cr-label">GitHub</span>
-              <span class="cr-value">github.com/tejaspandure</span>
+            <div class="contact-details">
+              <span class="contact-label">GitHub</span>
+              <span class="contact-value">github.com/tejaspandure</span>
             </div>
-            <span class="cr-arrow" aria-hidden="true">→</span>
+            <span class="contact-arrow" aria-hidden="true">→</span>
           </a>
 
         </div>
       </div>
 
-      <div class="contact-right">
-        <div class="cta-panel" id="ctaPanel">
-          <div class="cta-panel-glow" aria-hidden="true"></div>
-          <h3 class="cta-panel-title">Open to Opportunities</h3>
-          <p class="cta-panel-body">Looking for AI/Backend roles where I can build real systems that matter.</p>
-          <div class="cta-panel-actions">
-            <a href="/cdn-cgi/l/email-protection#03776669627073626d67767166323343646e626a6f2d606c6e" class="cta-primary" id="sendMsgBtn">Send a Message →</a>
-            <a href="https://drive.google.com/drive/folders/1BerPEMrnpgcBDefpkpVDlP-jiLF4H9Kp?usp=drive_link"
-               class="cta-ghost" target="_blank" rel="noopener" id="dlResumeBtn">Download Resume</a>
-          </div>
-          <div class="cta-avail">
-            <span class="avail-pulse"></span>
-            Available for roles starting 2026
-          </div>
+      <div class="contact-cta-panel" id="ctaPanel">
+        <div class="cta-panel-glow" aria-hidden="true"></div>
+        <div class="cta-panel-top-line" aria-hidden="true"></div>
+        <h3 class="cta-panel-title">Open to Opportunities</h3>
+        <p class="cta-panel-desc">Looking for AI/Backend roles where I can build real systems that matter.</p>
+        <div class="cta-panel-actions">
+          <a href="mailto:tejaspandure14@gmail.com" class="btn-primary" id="sendMsgBtn">Send a Message →</a>
+          <a href="https://drive.google.com/drive/folders/1BerPEMrnpgcBDefpkpVDlP-jiLF4H9Kp?usp=drive_link"
+             class="btn-ghost" target="_blank" rel="noopener" id="dlResumeBtn">Download Resume</a>
+        </div>
+        <div class="cta-avail">
+          <span class="avail-dot"></span>
+          Available for roles starting 2026
         </div>
       </div>
 
@@ -782,6 +779,14 @@
       <p>Tejas Pandure — AI &amp; Backend Engineer</p>
     </div>
     <div class="footer-links">
-      <a href="https://github.com/tejaspandure"        target="_blank" rel="noopener">GitHub</a>
-      <a href="https://linkedin.com/in/tejaspandure"   target="_blank" rel="noopener">LinkedIn</a>
-      <a href="/cdn-cgi/l/email-protection#7f0b1a151e0c0
+      <a href="https://github.com/tejaspandure"      target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/tejaspandure" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:tejaspandure14@gmail.com">Email</a>
+    </div>
+    <p class="footer-copy">© 2026 Tejas Pandure. Built with precision.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
