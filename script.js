@@ -4,18 +4,19 @@
    ================================================================ */
 'use strict';
 
-/* ── PREMIUM GLOWING ORBS (BOKEH) BACKGROUND ───────────────────
-   Distinct, soft-glowing colorful balls drifting elegantly.
-   Apple-like depth of field with varied sizes and opacities.
+/* ── PREMIUM STARRY SKY WITH SHOOTING STAR ───────────────
+   Distinct, gently twinkling stars with an occasional
+   smooth shooting star streaking across the background.
    ─────────────────────────────────────────────────────────── */
-(function initPremiumOrbs() {
+(function initStarrySky() {
   const canvas = document.getElementById('particleCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H;
-  const ORB_COUNT = 35; /* Fewer, high-quality orbs */
-  const orbs = [];
-
+  
+  const STAR_COUNT = 150;
+  const stars = [];
+  
   function resize() {
     W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
@@ -23,79 +24,121 @@
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  /* Premium palette: Cyan, Violet, Emerald, Magenta */
-  const colors = [
-    [56, 189, 248],   /* Cyan */
-    [167, 139, 250],  /* Violet */
-    [52, 211, 153],   /* Emerald */
-    [236, 72, 153],   /* Magenta */
-  ];
-
-  /* Easing and random helpers */
   const rand = (min, max) => Math.random() * (max - min) + min;
 
-  class GlowingOrb {
+  /* --- Twinkling Stars --- */
+  class Star {
     constructor() {
       this.reset(true);
     }
     reset(initial = false) {
-      /* Base size between 10px and 220px to simulate extreme depth of field */
-      this.r = rand(10, 220);
-      /* Position */
       this.x = rand(0, W);
-      this.y = initial ? rand(0, H) : H + this.r + 10;
-      /* Speed depends inversely on size (parallax: bigger = closer = faster) */
-      const speedFactor = this.r / 100;
-      this.vy = rand(-0.2, -0.6) * speedFactor;
-      this.vx = rand(-0.15, 0.15);
-      /* Wobble (sine wave drift) */
-      this.wobbleSpeed = rand(0.005, 0.02);
-      this.wobblePhase = rand(0, Math.PI * 2);
-      this.wobbleAmp = rand(10, 40) * speedFactor;
-      this.baseX = this.x;
-      
-      /* Color and opacity */
-      this.rgb = colors[Math.floor(Math.random() * colors.length)];
-      /* Bigger = more out of focus = lower opacity */
-      this.baseAlpha = rand(0.05, 0.25) * (150 / (this.r + 50)); 
+      this.y = rand(0, H);
+      this.r = rand(0.4, 1.8); /* Tiny, elegant stars */
+      this.baseAlpha = rand(0.1, 0.8);
+      /* Slow drift so the sky feels slightly alive */
+      this.vx = rand(-0.03, 0.03); 
+      this.vy = rand(-0.03, 0.03);
+      /* Twinkle sine wave */
+      this.twinklePhase = rand(0, Math.PI * 2);
+      this.twinkleSpeed = rand(0.005, 0.02);
     }
     update() {
+      this.x += this.vx;
       this.y += this.vy;
-      this.baseX += this.vx;
-      this.x = this.baseX + Math.sin(Date.now() * this.wobbleSpeed + this.wobblePhase) * this.wobbleAmp;
-
-      if (this.y < -this.r || this.x < -this.r || this.x > W + this.r) {
-        this.reset();
-      }
+      if (this.x < 0) this.x = W;
+      if (this.x > W) this.x = 0;
+      if (this.y < 0) this.y = H;
+      if (this.y > H) this.y = 0;
     }
     draw() {
       ctx.beginPath();
-      // Creating a soft glowing radial gradient for each orb
-      const grad = ctx.createRadialGradient(this.x, this.y, this.r * 0.1, this.x, this.y, this.r);
-      const [r, g, b] = this.rgb;
-      grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${this.baseAlpha})`);
-      grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, ${this.baseAlpha * 0.5})`);
-      grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-      
-      ctx.fillStyle = grad;
+      // Apply sine wave twinkle to base alpha
+      const a = this.baseAlpha * (0.5 + 0.5 * Math.sin(Date.now() * this.twinkleSpeed + this.twinklePhase));
+      ctx.fillStyle = `rgba(180, 220, 255, ${a})`;
       ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  for (let i = 0; i < ORB_COUNT; i++) {
-    orbs.push(new GlowingOrb());
+  for (let i = 0; i < STAR_COUNT; i++) {
+    stars.push(new Star());
   }
+
+  /* --- Shooting Star --- */
+  class ShootingStar {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.active = false;
+      this.x = 0;
+      this.y = 0;
+      this.len = 0;
+      this.vx = 0;
+      this.vy = 0;
+      this.alpha = 0;
+      this.wait = rand(100, 300); /* Wait X frames before shooting */
+    }
+    spawn() {
+      this.active = true;
+      /* Spawn from top or right off-screen */
+      if (Math.random() > 0.5) {
+        this.x = rand(0, W);
+        this.y = -50;
+      } else {
+        this.x = W + 50;
+        this.y = rand(0, H * 0.5);
+      }
+      /* Diagonal streak downwards right-to-left or left-to-right */
+      const angle = rand(Math.PI / 4, (3 * Math.PI) / 4);
+      const speed = rand(12, 24);
+      this.vx = -Math.cos(angle) * speed; 
+      this.vy = Math.sin(angle) * speed;
+      this.len = rand(80, 200);
+      this.alpha = 1;
+    }
+    update() {
+      if (!this.active) {
+        this.wait--;
+        if (this.wait <= 0) this.spawn();
+        return;
+      }
+      this.x += this.vx;
+      this.y += this.vy;
+      
+      if (this.x < -this.len || this.x > W + this.len || this.y > H + this.len) {
+        this.reset();
+      }
+    }
+    draw() {
+      if (!this.active) return;
+      ctx.beginPath();
+      const grad = ctx.createLinearGradient(this.x, this.y, this.x - this.vx * (this.len / 10), this.y - this.vy * (this.len / 10));
+      grad.addColorStop(0, `rgba(255, 255, 255, 0.9)`);
+      grad.addColorStop(1, `rgba(100, 180, 255, 0)`);
+      
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = 'round';
+      ctx.moveTo(this.x, this.y);
+      ctx.lineTo(this.x - this.vx * (this.len / 10), this.y - this.vy * (this.len / 10));
+      ctx.stroke();
+    }
+  }
+  
+  const shooter = new ShootingStar();
 
   function loop() {
     ctx.clearRect(0, 0, W, H);
-    // Additive blending makes overlapping orbs look like light
-    ctx.globalCompositeOperation = 'screen';
-    
-    orbs.forEach(orb => {
-      orb.update();
-      orb.draw();
+    // Draw stars
+    stars.forEach(star => {
+      star.update();
+      star.draw();
     });
+    // Draw shooting star
+    shooter.update();
+    shooter.draw();
     
     requestAnimationFrame(loop);
   }
